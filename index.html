@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title style="color:white">SECRETARIA DE SAÚDE DO ESTADO - MA </title>
+    <style>
+        body {
+            background: rgb(2,0,36);
+	    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,121,120,1) 35%, rgba(198,225,166,1) 100%);
+            padding: 20px;}
+
+    </style>
+</head>
+<body>
+
+<h2  style="color:white;text-align: center;font-size:30px;   font-family: 'Roboto', sans-serif; ">SECRETARIA DE SAÚDE DO ESTADO - MA </h2>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+
+    <div id="grafico1" style="width: 45%; height: 300px;"></div>
+    <div id="grafico2" style="width: 45%; height: 300px;"></div>
+    <div id="grafico3" style="width: 45%; height: 300px;"></div>
+    <div id="grafico4" style="width: 45%; height: 300px;"></div>
+<h5 style="color:white">Dashboard desenvolvida para o seletivo de analista financeiro.</h5>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script>
+    // Incorporar gráficos Plotly
+    document.getElementById('grafico1').innerHTML = '<iframe src="vigilancia.html" width="100%" height="100%"></iframe>';
+    document.getElementById('grafico2').innerHTML = '<iframe src="mediaealta.html" width="100%" height="100%"></iframe>';
+    document.getElementById('grafico3').innerHTML = '<iframe src="atencaoespecializada.html" width="100%" height="100%"></iframe>';
+    document.getElementById('grafico4').innerHTML = '<iframe src="atencaoprimaria.html" width="100%" height="100%"></iframe>';
+</script>
+
+</body>
+</html>
