@@ -1,0 +1,49 @@
+import pandas as pd
+import time
+import datetime as dt
+from datetime import date
+receitas=pd.read_excel(r"C:\Users\55989\Downloads\receitas.xlsx")
+despesas=pd.read_excel(r"C:\Users\55989\Downloads\despesas.xlsx")
+converteMes={'JANEIRO': dt.datetime(2022,1,1,0,0,0),
+             'FEVEREIRO': dt.datetime(2022,2,1,0,0,0),
+             'MARÇO': dt.datetime(2022,3,1,0,0,0),
+             'ABRIL': dt.datetime(2022,4,1,0,0,0),
+             'MAIO': dt.datetime(2022,5,1,0,0,0),
+             'JUNHO': dt.datetime(2022,6,1,0,0,0),
+             'JULHO': dt.datetime(2022,7,1,0,0,0),
+             'AGOSTO': dt.datetime(2022,8,1,0,0,0),
+             'SETEMBRO': dt.datetime(2022,9,1,0,0,0),
+             'OUTUBRO': dt.datetime(2022,10,1,0,0,0),
+             'NOVEMBRO': dt.datetime(2022,11,1,0,0,0),
+             'DEZEMBRO': dt.datetime(2022,12,1,0,0,0)}
+converteMes2={'jan': dt.datetime(2022,1,1,0,0,0),
+             'fev': dt.datetime(2022,2,1,0,0,0),
+             'mar': dt.datetime(2022,3,1,0,0,0),
+             'abr': dt.datetime(2022,4,1,0,0,0),
+             'mai': dt.datetime(2022,5,1,0,0,0),
+             'jun': dt.datetime(2022,6,1,0,0,0),
+             'jul': dt.datetime(2022,7,1,0,0,0),
+             'ago': dt.datetime(2022,8,1,0,0,0),
+             'set': dt.datetime(2022,9,1,0,0,0),
+             'out': dt.datetime(2022,10,1,0,0,0),
+             'nov': dt.datetime(2022,11,1,0,0,0),
+             'dez': dt.datetime(2022,12,1,0,0,0)}
+
+converteGrupo={"ATENÇÃO DE MÉDIA E ALTA COMPLEXIDADE AMBULATORIAL E HOSPITALAR":"MÉDIA E ALTA COMPLEXIDADE"}
+receitas.rename(columns={'DATA DE RECEBIMENTO':'MES_REFERENCIA'}, inplace = True)
+despesas.rename(columns={'MES_DE_PAGAMENTO':'MES_REFERENCIA'}, inplace = True)
+
+receitas["MES_REFERENCIA"]=receitas["MES_REFERENCIA"].replace(converteMes)
+receitas["GRUPO"]=receitas["GRUPO"].replace(converteGrupo)
+despesas["MES_REFERENCIA"]=despesas["MES_REFERENCIA"].replace(converteMes2)
+receitasAgrupadas=receitas.groupby(['BLOCO','GRUPO','MES_REFERENCIA']).sum()
+despesasAgrupadas=despesas.groupby(['GRUPO','MES_REFERENCIA']).sum()
+print(receitasAgrupadas, despesasAgrupadas)
+merged=receitasAgrupadas.merge(despesasAgrupadas, on=['GRUPO','MES_REFERENCIA'], how='outer')
+merged.sort_values(by=['GRUPO','MES_REFERENCIA'], inplace=True)
+resultado=merged.fillna(0)
+resultado['SALDO']= resultado['VALOR RECEBIDO']-(resultado['DESPESA_CAPITAL']+resultado['DESPESA_CUSTEIO'])
+resultado['ACUMULADO'] = resultado.groupby('GRUPO')['SALDO'].cumsum()
+
+
+print(resultado)
